@@ -7,9 +7,12 @@ Secondary question: Would this be easier in vue / angular? I want to change to v
 Detail:
 
 I have bingo-page-vm.ts, which has:
-const cards = ObservableArray<BingoCard>.
+```typescript
+const cards = ObservableArray<BingoCard>;
+```
 
 This array is passed in to the nativescript pager plugin:
+```xml
 <pager:Pager items="{{ cards }}" selectedIndex="{{ cardIndex }}">
   <pager:Pager.itemTemplate>
     <FlexboxLayout flexDirection="column" alignItems="center">
@@ -17,9 +20,11 @@ This array is passed in to the nativescript pager plugin:
     </FlexboxLayout>
   </pager:Pager.itemTemplate>
 </pager:Pager> 
+```
 
 Bingo cards look like:
 
+```typescript
 export interface BPCardSpace {
   number: number;
   daubed: boolean;
@@ -41,15 +46,21 @@ export interface BPBingoCard {
 
   data: BPBingoCardData;
 }
+```
 
 Now, obviously my bingocard is held in a component. I then have a function to toggle a spaces daubed property:
+
+```xml
 <Repeater row="1" col="0" items="{{ data.b }}">
   <Repeater.itemTemplate>
     <Label text="{{ $value.number }}" loaded="centerLabel" tap="toggleDaub" />
   </Repeater.itemTemplate>
 </Repeater>
+```
 
 In bingocard.ts:
+
+```typescript
 export function toggleDaub(args: EventData) {
   const label = <Label>args.object;
 
@@ -60,8 +71,11 @@ export function toggleDaub(args: EventData) {
 
   container.page.bindingContext.toggleDaub(label.bindingContext.number);
 }
+```
 
 Then in my bingo-page-vm.ts:
+
+```typescript
 toggleDaub(n: number) {
   const card = this.cards.getItem(this.cardIndex);
 
@@ -82,4 +96,4 @@ toggleDaub(n: number) {
   card.data[cols[colIndex]][rowIndex] = item;
   this.cards.setItem(this.cardIndex, card);
 }
-
+```
